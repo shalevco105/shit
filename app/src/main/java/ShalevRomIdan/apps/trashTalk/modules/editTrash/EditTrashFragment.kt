@@ -64,7 +64,7 @@ class EditTrashFragment : Fragment() {
         val view = binding.root
 
         val trashId = arguments?.let {
-            EditTrashFragmentArgs.fromBundle(it).trashid
+            EditTrashFragmentArgs.fromBundle(it).trashID
         }
 
         Model.instance.getTrashById(trashId ?: "") {
