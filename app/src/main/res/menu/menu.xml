@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/dishesFragment"
+        android:icon="@android:drawable/ic_dialog_dialer"
+        android:title="list" />
+    <item
+        android:id="@+id/addDishFragment"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="add" />
+    <item
+        android:id="@+id/userDishesFragment"
+        android:icon="@android:drawable/ic_dialog_dialer"
+        android:title="my dishes" />
+    <item
+        android:id="@+id/apiFragment"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="api" />
+    <item
+        android:id="@+id/logoutBtn"
+        android:title="Log out" />
+</menu>

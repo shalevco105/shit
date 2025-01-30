@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/dishesFragment"
+        android:name="royreut.apps.friendish.modules.dishes.DishesFragment"
+        android:label="Dishes List"
+        tools:layout="@layout/fragment_dishes">
+        <action
+            android:id="@+id/action_dishesFragment_to_showcaseDishFragment"
+            app:destination="@id/showcaseDishFragment" />
+        <action
+            android:id="@+id/action_dishesFragment_self"
+            app:destination="@id/dishesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDishesFragment"
+        android:name="royreut.apps.friendish.modules.userDishes.UserDishesFragment"
+        android:label="My Dishes List"
+        tools:layout="@layout/fragment_user_dishes">
+        <action
+            android:id="@+id/action_dishesFragment_to_showcaseDishFragment"
+            app:destination="@id/showcaseDishFragment" />
+        <action
+            android:id="@+id/action_userDishesFragment_to_editDishFragment"
+            app:destination="@id/editDishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDishFragment"
+        android:name="royreut.apps.friendish.modules.addDish.AddDishFragment"
+        android:label="Add Dish"
+        tools:layout="@layout/fragment_add_dish" />
+    <action android:id="@+id/action_global_addDishFragment" app:destination="@id/addDishFragment" />
+    <fragment
+        android:id="@+id/showcaseDishFragment"
+        android:name="royreut.apps.friendish.modules.showcaseDish.ShowcaseDishFragment"
+        android:label="Dish Details"
+        tools:layout="@layout/fragment_showcase_dish" >
+        <argument
+            android:name="DISH_NAME"
+            app:argType="string" />
+        <argument
+            android:name="DISH_RECIPE"
+            app:argType="string" />
+        <argument
+            android:name="DISH_IMAGE_URL"
+            app:argType="string" />
+        <argument
+            android:name="DISH_AUTHOR"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/apiFragment"
+        android:name="royreut.apps.friendish.modules.api.ApiFragment"
+        android:label="fragment_api"
+        tools:layout="@layout/fragment_api" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="royreut.apps.friendish.modules.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_dishesFragment3"
+            app:destination="@id/dishesFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="royreut.apps.friendish.modules.auth.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="royreut.apps.friendish.modules.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" /><action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment"/><action android:id="@+id/action_global_dishesFragment" app:destination="@id/dishesFragment"/>
+    <fragment
+        android:id="@+id/editDishFragment"
+        android:name="royreut.apps.friendish.modules.editDish.EditDishFragment"
+        android:label="fragment_edit_dish"
+        tools:layout="@layout/fragment_edit_dish" >
+    <argument
+        android:name="DISH_ID"
+        app:argType="string" />
+    </fragment><action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment"/>
+</navigation>
