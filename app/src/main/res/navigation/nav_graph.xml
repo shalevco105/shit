@@ -6,73 +6,73 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/dishesFragment"
-        android:name="royreut.apps.friendish.modules.dishes.DishesFragment"
-        android:label="Dishes List"
-        tools:layout="@layout/fragment_dishes">
+        android:id="@+id/trashesFragment"
+        android:name="trashTalk.apps.trashTalk.modules.trashes.TrashesFragment"
+        android:label="Trashes List"
+        tools:layout="@layout/fragment_trashes">
         <action
-            android:id="@+id/action_dishesFragment_to_showcaseDishFragment"
-            app:destination="@id/showcaseDishFragment" />
+            android:id="@+id/action_trashesFragment_to_showcaseTrashFragment"
+            app:destination="@id/showcaseTrashFragment" />
         <action
-            android:id="@+id/action_dishesFragment_self"
-            app:destination="@id/dishesFragment" />
+            android:id="@+id/action_trashesFragment_self"
+            app:destination="@id/trashesFragment" />
     </fragment>
     <fragment
-        android:id="@+id/userDishesFragment"
-        android:name="royreut.apps.friendish.modules.userDishes.UserDishesFragment"
-        android:label="My Dishes List"
-        tools:layout="@layout/fragment_user_dishes">
+        android:id="@+id/userTrashesFragment"
+        android:name="trashTalk.apps.trashTalk.modules.userTrashes.UserTrashesFragment"
+        android:label="My Trashes List"
+        tools:layout="@layout/fragment_user_trashes">
         <action
-            android:id="@+id/action_dishesFragment_to_showcaseDishFragment"
-            app:destination="@id/showcaseDishFragment" />
+            android:id="@+id/action_trashesFragment_to_showcaseTrashFragment"
+            app:destination="@id/showcaseTrashFragment" />
         <action
-            android:id="@+id/action_userDishesFragment_to_editDishFragment"
-            app:destination="@id/editDishFragment" />
+            android:id="@+id/action_userTrashesFragment_to_editTrashFragment"
+            app:destination="@id/editTrashFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addDishFragment"
-        android:name="royreut.apps.friendish.modules.addDish.AddDishFragment"
-        android:label="Add Dish"
-        tools:layout="@layout/fragment_add_dish" />
-    <action android:id="@+id/action_global_addDishFragment" app:destination="@id/addDishFragment" />
+        android:id="@+id/addTrashFragment"
+        android:name="trashTalk.apps.trashTalk.modules.addTrash.AddTrashFragment"
+        android:label="Add Trash"
+        tools:layout="@layout/fragment_add_trash" />
+    <action android:id="@+id/action_global_addTrashFragment" app:destination="@id/addTrashFragment" />
     <fragment
-        android:id="@+id/showcaseDishFragment"
-        android:name="royreut.apps.friendish.modules.showcaseDish.ShowcaseDishFragment"
-        android:label="Dish Details"
-        tools:layout="@layout/fragment_showcase_dish" >
+        android:id="@+id/showcaseTrashFragment"
+        android:name="trashTalk.apps.trashTalk.modules.showcaseTrash.ShowcaseTrashFragment"
+        android:label="Trash Details"
+        tools:layout="@layout/fragment_showcase_trash" >
         <argument
-            android:name="DISH_NAME"
+            android:name="trash_NAME"
             app:argType="string" />
         <argument
-            android:name="DISH_RECIPE"
+            android:name="trash_RECIPE"
             app:argType="string" />
         <argument
-            android:name="DISH_IMAGE_URL"
+            android:name="trash_IMAGE_URL"
             app:argType="string" />
         <argument
-            android:name="DISH_AUTHOR"
+            android:name="trash_AUTHOR"
             app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/apiFragment"
-        android:name="royreut.apps.friendish.modules.api.ApiFragment"
+        android:name="trashTalk.apps.trashTalk.modules.api.ApiFragment"
         android:label="fragment_api"
         tools:layout="@layout/fragment_api" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="royreut.apps.friendish.modules.auth.LoginFragment"
+        android:name="trashTalk.apps.trashTalk.modules.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_dishesFragment3"
-            app:destination="@id/dishesFragment" />
+            android:id="@+id/action_loginFragment_to_trashesFragment3"
+            app:destination="@id/trashesFragment" />
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="royreut.apps.friendish.modules.auth.SignUpFragment"
+        android:name="trashTalk.apps.trashTalk.modules.auth.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
@@ -81,16 +81,16 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="royreut.apps.friendish.modules.profile.ProfileFragment"
+        android:name="trashTalk.apps.trashTalk.modules.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" /><action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment"/><action android:id="@+id/action_global_dishesFragment" app:destination="@id/dishesFragment"/>
+        tools:layout="@layout/fragment_profile" /><action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment"/><action android:id="@+id/action_global_trashesFragment" app:destination="@id/trashesFragment"/>
     <fragment
-        android:id="@+id/editDishFragment"
-        android:name="royreut.apps.friendish.modules.editDish.EditDishFragment"
-        android:label="fragment_edit_dish"
-        tools:layout="@layout/fragment_edit_dish" >
+        android:id="@+id/editTrashFragment"
+        android:name="trashTalk.apps.trashTalk.modules.editTrash.EditTrashFragment"
+        android:label="fragment_edit_trash"
+        tools:layout="@layout/fragment_edit_trash" >
     <argument
-        android:name="DISH_ID"
+        android:name="trash_ID"
         app:argType="string" />
     </fragment><action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment"/>
 </navigation>

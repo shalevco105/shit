@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "793329068987",
-    "project_id": "friendish-ef963",
-    "storage_bucket": "friendish-ef963.appspot.com"
+    "project_id": "trashTalk-ef963",
+    "storage_bucket": "trashTalk-ef963.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:793329068987:android:489cae9d9c780f8b3f329e",
         "android_client_info": {
-          "package_name": "royreut.apps.friendish"
+          "package_name": "trashTalk.apps.trashTalk"
         }
       },
       "oauth_client": [],

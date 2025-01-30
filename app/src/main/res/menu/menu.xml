@@ -2,17 +2,17 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/dishesFragment"
+        android:id="@+id/trashesFragment"
         android:icon="@android:drawable/ic_dialog_dialer"
         android:title="list" />
     <item
-        android:id="@+id/addDishFragment"
+        android:id="@+id/addTrashFragment"
         android:icon="@android:drawable/ic_menu_add"
         android:title="add" />
     <item
-        android:id="@+id/userDishesFragment"
+        android:id="@+id/userTrashesFragment"
         android:icon="@android:drawable/ic_dialog_dialer"
-        android:title="my dishes" />
+        android:title="my trashes" />
     <item
         android:id="@+id/apiFragment"
         android:icon="@android:drawable/ic_menu_add"

@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'royreut.apps.friendish'
+    namespace 'trashTalk.apps.trashTalk'
     compileSdk 34
 
     defaultConfig {
-        applicationId "royreut.apps.friendish"
+        applicationId "trashTalk.apps.trashTalk"
         minSdk 25
         targetSdk 34
         versionCode 1

@@ -1,0 +1,64 @@
+package trashTalk.apps.trashTalk.modules.showcaseTrash
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.squareup.picasso.Picasso
+import trashTalk.apps.trashTalk.databinding.FragmentShowcaseTrashBinding
+import trashTalk.apps.trashTalk.models.Model
+
+class ShowcaseTrashFragment : Fragment() {
+    private var trashNameTextView: TextView? = null
+    private var trashRecipeTextView: TextView? = null
+    private var trashAuthorTextView: TextView? = null
+    private var trashImageView: ImageView? = null
+
+    private var _binding: FragmentShowcaseTrashBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _binding = FragmentShowcaseTrashBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        val trashName = arguments?.let {
+            ShowcaseTrashFragmentArgs.fromBundle(it).trashname
+        }
+
+        val trashRecipe = arguments?.let {
+            ShowcaseTrashFragmentArgs.fromBundle(it).trashrecipe
+        }
+
+        val trashUrl = arguments?.let {
+            ShowcaseTrashFragmentArgs.fromBundle(it).trashimageurl
+        }
+
+        val author = arguments?.let {
+            ShowcaseTrashFragmentArgs.fromBundle(it).trashauthor
+        }
+
+        trashNameTextView = binding.showcaseRecipeName
+        trashRecipeTextView = binding.showcaseTrashRecipe
+        trashAuthorTextView = binding.authorNickName
+        trashImageView = binding.showcaseTrashImage
+
+        trashNameTextView?.text = trashName ?: "BOOP"
+        trashRecipeTextView?.text = trashRecipe ?: "BOOP"
+        Model.instance.getAuthorByEmail(author?:"") {
+            trashAuthorTextView?.text = it.nickname
+        }
+        Picasso.get().load(trashUrl)
+            .centerCrop()
+            .fit()
+            .into(trashImageView);
+
+        return view
+    }
+}
