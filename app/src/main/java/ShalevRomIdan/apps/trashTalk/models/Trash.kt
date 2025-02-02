@@ -48,7 +48,7 @@ data class Trash(
                     .Globals
                     .appContext
                     ?.getSharedPreferences("TAG", Context.MODE_PRIVATE)
-                    ?.getLong(GET_LAST_UPDATED_USER_trashES,0) ?:0
+                    ?.getLong(GET_LAST_UPDATED_USER_TRASHES,0) ?:0
             }
             set (value) {
                 MyApplication
@@ -56,11 +56,11 @@ data class Trash(
                     ?.appContext
                     ?.getSharedPreferences("TAG", Context.MODE_PRIVATE)
                     ?.edit()
-                    ?.putLong(GET_LAST_UPDATED_USER_trashES, value)?.apply()
+                    ?.putLong(GET_LAST_UPDATED_USER_TRASHES, value)?.apply()
             }
         const val LAST_UPDATED:String = "lastUpdated"
         const val GET_LAST_UPDATED:String = "get_last_updated_trash"
-        const val GET_LAST_UPDATED_USER_trashES:String = "get_last_updated_user_trashes"
+        const val GET_LAST_UPDATED_USER_TRASHES:String = "get_last_updated_user_trashes"
 
         fun fromJSON(json:Map<String, Any>):Trash {
             val id = json.get(ID_KEY) as? String ?: ""

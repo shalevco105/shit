@@ -29,19 +29,19 @@ class ShowcaseTrashFragment : Fragment() {
         val view = binding.root
 
         val trashName = arguments?.let {
-            ShowcaseTrashFragmentArgs.fromBundle(it).trashNAME
+            ShowcaseTrashFragmentArgs.fromBundle(it).TRASHNAME
         }
 
         val trashRecipe = arguments?.let {
-            ShowcaseTrashFragmentArgs.fromBundle(it).trashRECIPE
+            ShowcaseTrashFragmentArgs.fromBundle(it).TRASHRECIPE
         }
 
         val trashUrl = arguments?.let {
-            ShowcaseTrashFragmentArgs.fromBundle(it).trashIMAGEURL
+            ShowcaseTrashFragmentArgs.fromBundle(it).TRASHIMAGEURL
         }
 
         val author = arguments?.let {
-            ShowcaseTrashFragmentArgs.fromBundle(it).trashAUTHOR
+            ShowcaseTrashFragmentArgs.fromBundle(it).TRASHAUTHOR
         }
 
         trashNameTextView = binding.showcaseRecipeName

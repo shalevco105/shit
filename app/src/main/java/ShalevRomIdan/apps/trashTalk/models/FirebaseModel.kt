@@ -12,8 +12,8 @@ class FirebaseModel {
     private val db = Firebase.firestore
 
     companion object {
-        const val trashES_COLLECTION_PATH = "trashes"
-        const val USERS_COLLECTION_PATH = "users"
+        const val TRASHES_COLLECTION_PATH = "Trashes"
+        const val USERS_COLLECTION_PATH = "Users"
     }
 
     init {
@@ -27,7 +27,7 @@ class FirebaseModel {
     }
 
     fun getAllTrashes(since:Long, callback: (List<Trash>) -> Unit) {
-        db.collection(trashES_COLLECTION_PATH)
+        db.collection(TRASHES_COLLECTION_PATH)
             .whereGreaterThanOrEqualTo(Trash.LAST_UPDATED, Timestamp(since,0))
             .get()
             .addOnCompleteListener {
@@ -44,7 +44,7 @@ class FirebaseModel {
     }
 
     fun getAllUserTrashes(userEmail:String,since:Long, callback: (List<Trash>) -> Unit) {
-        db.collection(trashES_COLLECTION_PATH)
+        db.collection(TRASHES_COLLECTION_PATH)
             .whereGreaterThanOrEqualTo(Trash.LAST_UPDATED, Timestamp(since,0))
             .whereEqualTo("author", userEmail)
             .get()
@@ -62,7 +62,7 @@ class FirebaseModel {
     }
 
     fun deleteTrash(trash: Trash, callback: () -> Unit) {
-        db.collection(trashES_COLLECTION_PATH)
+        db.collection(TRASHES_COLLECTION_PATH)
             .document(trash.id)
             .delete()
             .addOnSuccessListener { callback() }
@@ -72,7 +72,7 @@ class FirebaseModel {
     }
 
     fun addTrash(trash: Trash, callback: () -> Unit) {
-        db.collection(trashES_COLLECTION_PATH)
+        db.collection(TRASHES_COLLECTION_PATH)
             .document(trash.id)
             .set(trash.json)
             .addOnSuccessListener { callback() }
@@ -82,7 +82,7 @@ class FirebaseModel {
     }
 
     fun editTrash(trash: Trash, callback: () -> Unit) {
-        db.collection(trashES_COLLECTION_PATH)
+        db.collection(TRASHES_COLLECTION_PATH)
             .document(trash.id)
             .update(trash.json)
             .addOnSuccessListener { callback() }
@@ -132,7 +132,7 @@ class FirebaseModel {
     }
 
     fun getTrashById(id:String, callback: (Trash) -> Unit) {
-        db.collection(trashES_COLLECTION_PATH)
+        db.collection(TRASHES_COLLECTION_PATH)
             .whereEqualTo("id", id)
             .get()
             .addOnCompleteListener {
