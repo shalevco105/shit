@@ -84,26 +84,25 @@ class SignUpFragment : Fragment() {
         val email = emailTextView?.text.toString()
         val password = passwordTextView?.text.toString()
         val nickname = nicknameTextView?.text.toString()
-
         if(!(email.isNullOrBlank() ||
                     password.isNullOrBlank() ||
-                    nickname.isNullOrBlank() ||
-                    profileImageUri == null)) {
-            uploadImageToServer { uri ->
-                Model.instance.signupUser(email, password, nickname, uri) { task ->
-                    if (task.isSuccessful) {
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_signUpFragment_to_loginFragment)
-                    } else {
-                        Toast.makeText(
-                            view.context,
-                            "Sign up failed. ${task.exception?.message}",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
-                    progressBar?.visibility = View.GONE
-                }
-            }
+                    nickname.isNullOrBlank())) {
+//                   || profileImageUri == null)) {
+//            uploadImageToServer { uri ->
+//                Model.instance.signupUser(email, password, nickname, uri) { task ->
+//                    if (task.isSuccessful) {
+//                        Navigation.findNavController(view)
+//                            .navigate(R.id.action_signUpFragment_to_loginFragment)
+//                    } else {
+//                        Toast.makeText(
+//                            view.context,
+//                            "Sign up failed. ${task.exception?.message}",
+//                            Toast.LENGTH_SHORT,
+//                        ).show()
+//                    }
+//                    progressBar?.visibility = View.GONE
+//                }
+//            }
 
         } else {
             Toast.makeText(
