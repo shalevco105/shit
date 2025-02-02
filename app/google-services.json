@@ -2,12 +2,31 @@
   "project_info": {
     "project_number": "929512653111",
     "project_id": "trashtalk-b0d40",
-    "storage_bucket": "trashTalk-ef963.appspot.com"
+    "storage_bucket": "trashtalk-b0d40.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:793329068987:android:489cae9d9c780f8b3f329e",
+        "mobilesdk_app_id": "1:929512653111:android:9acfd048c1061e0b06dab2",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6rLAi4rfmW7cZzEJ32OnOOG3OhpVyCtc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929512653111:android:98d5f7ea6bad347906dab2",
         "android_client_info": {
           "package_name": "trashTalk.apps.trashTalk"
         }
@@ -15,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBzPXL-oEOY6cGIKoQtOENQSYoONTCxWX4"
+          "current_key": "AIzaSyD6rLAi4rfmW7cZzEJ32OnOOG3OhpVyCtc"
         }
       ],
       "services": {

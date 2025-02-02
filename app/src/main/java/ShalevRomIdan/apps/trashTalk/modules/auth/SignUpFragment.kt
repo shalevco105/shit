@@ -27,6 +27,7 @@ import trashTalk.apps.trashTalk.R
 import trashTalk.apps.trashTalk.base.MyApplication
 import trashTalk.apps.trashTalk.databinding.FragmentSignUpBinding
 import trashTalk.apps.trashTalk.models.Model
+import java.io.File
 
 class SignUpFragment : Fragment() {
     private val placeholderImageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png"
@@ -86,23 +87,23 @@ class SignUpFragment : Fragment() {
         val nickname = nicknameTextView?.text.toString()
         if(!(email.isNullOrBlank() ||
                     password.isNullOrBlank() ||
-                    nickname.isNullOrBlank())) {
-//                   || profileImageUri == null)) {
-//            uploadImageToServer { uri ->
-//                Model.instance.signupUser(email, password, nickname, uri) { task ->
-//                    if (task.isSuccessful) {
-//                        Navigation.findNavController(view)
-//                            .navigate(R.id.action_signUpFragment_to_loginFragment)
-//                    } else {
-//                        Toast.makeText(
-//                            view.context,
-//                            "Sign up failed. ${task.exception?.message}",
-//                            Toast.LENGTH_SHORT,
-//                        ).show()
-//                    }
-//                    progressBar?.visibility = View.GONE
-//                }
-//            }
+                    nickname.isNullOrBlank() ||
+                    profileImageUri == null)) {
+            uploadImageToServer { uri ->
+                Model.instance.signupUser(email, password, nickname, uri) { task ->
+                    if (task.isSuccessful) {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_signUpFragment_to_loginFragment)
+                    } else {
+                        Toast.makeText(
+                            view.context,
+                            "Sign up failed. ${task.exception?.message}",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                    progressBar?.visibility = View.GONE
+                }
+            }
 
         } else {
             Toast.makeText(
