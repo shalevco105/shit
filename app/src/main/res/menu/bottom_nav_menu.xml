@@ -14,4 +14,8 @@
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="profile" />
+    <item
+        android:id="@+id/mapFragment"
+        android:icon="@drawable/ic_map"
+        android:title="Map" />
 </menu>

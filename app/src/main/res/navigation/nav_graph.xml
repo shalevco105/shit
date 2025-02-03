@@ -1,10 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <!-- Login and SignUp Fragments -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="trashTalk.apps.trashTalk.modules.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_trashesFragment3"
+            app:destination="@id/trashesFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="trashTalk.apps.trashTalk.modules.auth.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <!-- Main Fragments -->
     <fragment
         android:id="@+id/trashesFragment"
         android:name="trashTalk.apps.trashTalk.modules.trashes.TrashesFragment"
@@ -17,6 +41,7 @@
             android:id="@+id/action_trashesFragment_self"
             app:destination="@id/trashesFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/userTrashesFragment"
         android:name="trashTalk.apps.trashTalk.modules.userTrashes.UserTrashesFragment"
@@ -29,17 +54,12 @@
             android:id="@+id/action_userTrashesFragment_to_editTrashFragment"
             app:destination="@id/editTrashFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/addTrashFragment"
-        android:name="trashTalk.apps.trashTalk.modules.addTrash.AddTrashFragment"
-        android:label="Add Trash"
-        tools:layout="@layout/fragment_add_trash" />
-    <action android:id="@+id/action_global_addTrashFragment" app:destination="@id/addTrashFragment" />
+
     <fragment
         android:id="@+id/showcaseTrashFragment"
         android:name="trashTalk.apps.trashTalk.modules.showcaseTrash.ShowcaseTrashFragment"
         android:label="Trash Details"
-        tools:layout="@layout/fragment_showcase_trash" >
+        tools:layout="@layout/fragment_showcase_trash">
         <argument
             android:name="TRASH_NAME"
             app:argType="string" />
@@ -53,44 +73,60 @@
             android:name="TRASH_AUTHOR"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/addTrashFragment"
+        android:name="trashTalk.apps.trashTalk.modules.addTrash.AddTrashFragment"
+        android:label="Add Trash"
+        tools:layout="@layout/fragment_add_trash">
+    </fragment>
+
     <fragment
         android:id="@+id/apiFragment"
         android:name="trashTalk.apps.trashTalk.modules.api.ApiFragment"
         android:label="fragment_api"
         tools:layout="@layout/fragment_api" />
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="trashTalk.apps.trashTalk.modules.auth.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_trashesFragment3"
-            app:destination="@id/trashesFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="trashTalk.apps.trashTalk.modules.auth.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
-        <action
-            android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="trashTalk.apps.trashTalk.modules.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" /><action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment"/><action android:id="@+id/action_global_trashesFragment" app:destination="@id/trashesFragment"/>
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_global_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_global_trashesFragment"
+            app:destination="@id/trashesFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/editTrashFragment"
         android:name="trashTalk.apps.trashTalk.modules.editTrash.EditTrashFragment"
         android:label="fragment_edit_trash"
-        tools:layout="@layout/fragment_edit_trash" >
-    <argument
-        android:name="TRASH_ID"
-        app:argType="string" />
-    </fragment><action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment"/>
+        tools:layout="@layout/fragment_edit_trash">
+        <argument
+            android:name="TRASH_ID"
+            app:argType="string" />
+    </fragment>
+
+    <!-- Map Fragment -->
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="trashTalk.apps.trashTalk.modules.map.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_trashesFragment"
+            app:destination="@id/trashesFragment" />
+    </fragment>
+
+    <!-- Global actions -->
+    <action
+        android:id="@+id/action_global_addTrashFragment"
+        app:destination="@id/addTrashFragment" />
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/loginFragment" />
+
 </navigation>
