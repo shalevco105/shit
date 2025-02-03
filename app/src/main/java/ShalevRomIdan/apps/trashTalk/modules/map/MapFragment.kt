@@ -11,9 +11,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.yourpackage.R
+import trashTalk.apps.trashTalk.R
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class iMapFragment : Fragment(), OnMapReadyCallback {
 
     private var mMap: GoogleMap? = null
 
