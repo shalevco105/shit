@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/trashesFragment"
-        android:icon="@android:drawable/ic_dialog_dialer"
-        android:title="home" />
-    <item
-        android:id="@+id/addTrashFragment"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="add" />
-    <item
-        android:id="@+id/profileFragment"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="profile" />
+<item
+    android:id="@+id/trashesFragment"
+    android:icon="@android:drawable/ic_dialog_dialer"
+    android:title="home" />
+<item
+    android:id="@+id/addTrashFragment"
+    android:icon="@android:drawable/ic_menu_add"
+    android:title="add" />
+<item
+    android:id="@+id/profileFragment"
+    android:icon="@drawable/ic_launcher_foreground"
+    android:title="profile" />
     <item
         android:id="@+id/mapFragment"
         android:icon="@drawable/ic_map"

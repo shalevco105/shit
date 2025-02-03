@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import trashTalk.apps.trashTalk.repository.RecipeIdeaRepository
+import trashTalk.apps.trashTalk.repository.CitiesRepository
 import trashTalk.apps.trashTalk.databinding.FragmentApiBinding
 
 class ApiFragment : Fragment() {
-    private lateinit var recipeIdeaRepository: RecipeIdeaRepository
+    private lateinit var citiesRepository: CitiesRepository
     private var _binding: FragmentApiBinding? = null
     private val binding get() = _binding!!
 
@@ -33,12 +33,12 @@ class ApiFragment : Fragment() {
 
         btnSearch.setOnClickListener {
             progressBar?.visibility = View.VISIBLE
-            recipeIdeaRepository = RecipeIdeaRepository()
-            recipeIdeaRepository.getIdeas(qText.text.toString()) { recipeIdeas ->
-                if(recipeIdeas?.get(0)?.title != null) {
-                    result.text = recipeIdeas.get(0).title.toString() ?: "no recipe found"
+            citiesRepository = CitiesRepository()
+            citiesRepository.getCities(qText.text.toString()) { cities ->
+                if(cities?.get(0)?.name != null) {
+                    result.text = cities.get(0).name;
                 } else {
-                    result.text = "No recipe found"
+                    result.text = "No cities found"
                 }
 
                 progressBar?.visibility = View.GONE

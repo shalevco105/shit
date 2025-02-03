@@ -3,8 +3,8 @@ package trashTalk.apps.trashTalk.models
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RecipeIdeaClient {
-    private const val BASE_URL = "https://api.spoonacular.com/food/menuItems/"
+object CitiesClient {
+    private const val BASE_URL = "https://data.gov.il/"
     private val retrofit: Retrofit
 
     init {
@@ -19,7 +19,7 @@ object RecipeIdeaClient {
         }
     }
 
-    val recipeIdeasApi: RecipeIdeasApi by lazy {
-        retrofit.create(RecipeIdeasApi::class.java)
+    val citiesApi: CitiesApi by lazy {
+        retrofit.create(CitiesApi::class.java)
     }
 }
