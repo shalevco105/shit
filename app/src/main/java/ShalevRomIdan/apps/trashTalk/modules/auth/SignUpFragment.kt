@@ -87,10 +87,8 @@ class SignUpFragment : Fragment() {
         val nickname = nicknameTextView?.text.toString()
         if(!(email.isNullOrBlank() ||
                     password.isNullOrBlank() ||
-                    nickname.isNullOrBlank() ||
-                    profileImageUri == null)) {
-            uploadImageToServer { uri ->
-                Model.instance.signupUser(email, password, nickname, uri) { task ->
+                    nickname.isNullOrBlank())) {
+                Model.instance.signupUser(email, password, nickname, "g") { task ->
                     if (task.isSuccessful) {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_signUpFragment_to_loginFragment)
@@ -103,9 +101,8 @@ class SignUpFragment : Fragment() {
                     }
                     progressBar?.visibility = View.GONE
                 }
-            }
 
-        } else {
+            } else {
             Toast.makeText(
                 view.context,
                 "Please fill all fields",
