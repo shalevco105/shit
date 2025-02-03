@@ -1,4 +1,4 @@
-package com.yourpackage.ui
+package trashTalk.apps.trashTalk.modules.map
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import trashTalk.apps.trashTalk.R
 
-class iMapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var mMap: GoogleMap? = null
 
