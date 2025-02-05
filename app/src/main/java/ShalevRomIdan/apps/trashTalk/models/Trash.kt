@@ -72,7 +72,7 @@ data class Trash(
             val isChecked = json.get(IS_CHECKED_KEY) as? Boolean?: false
             val author = json.get(AUTHOR) as? String?: ""
             val imageUrl = json[IMAGE_URL_KEY] as? String?: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg"
-            val trash = Trash(id, address, name, recipe, isChecked, author, imageUrl)
+            val trash = Trash(id, name, address, recipe, isChecked, author, imageUrl)
 
             val timestamp:Timestamp? = json[LAST_UPDATED] as? Timestamp
             timestamp?.let {
