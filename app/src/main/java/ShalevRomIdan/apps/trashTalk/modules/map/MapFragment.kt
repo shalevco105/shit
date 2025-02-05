@@ -1,13 +1,12 @@
 package trashTalk.apps.trashTalk.modules.map
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -16,39 +15,41 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 import trashTalk.apps.trashTalk.R
-
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var mMap: GoogleMap? = null
-    private lateinit var cardView: CardView
-
+    private var infoCard: View? = null
+    private var infoText: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_map, container, false)
-        cardView = view.findViewById(R.id.cardView) // Initialize CardView
-        cardView.visibility = View.GONE // Initially hide the card
-        return view
+        return inflater.inflate(R.layout.fragment_map, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
+
+        // Find info card views
+        infoCard = view.findViewById(R.id.infoCard)
+        infoText = view.findViewById(R.id.infoText)
+
+        // Hide card initially
+        infoCard?.visibility = View.GONE
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        // List of points in Israel
         val israelPoints = listOf(
             LatLng(31.7683, 35.2137),  // Jerusalem
             LatLng(32.0853, 34.7818),  // Tel Aviv
@@ -57,60 +58,40 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             LatLng(31.2529, 34.7915)   // Be'er Sheva
         )
 
+        // Add markers with custom icons
         for (point in israelPoints) {
-            // Load custom image using Picasso (or your preferred image loading library)
-            Picasso.get()
-                .load(R.drawable.ic_launcher_foreground) // Replace with your image resource
-                .resize(100,100) // Optional: resize image
-                .into(object : Target {
-                    override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
-                        val markerIcon = BitmapDescriptorFactory.fromBitmap(bitmap)
-                        val marker = mMap?.addMarker(
-                            MarkerOptions().position(point).icon(markerIcon)
-                        )
-                        marker?.tag = point // Store LatLng as marker tag
-
-                        // Set click listener for each marker
-                        mMap?.setOnMarkerClickListener { clickedMarker ->
-                            val clickedPoint = clickedMarker.tag as LatLng
-                            showCard(clickedPoint)
-                            true // Consume the click
-                        }
-
-                    }
-
-                    override fun onBitmapFailed(e: Exception, errorDrawable: Drawable?) {
-                        // Handle image loading failure (e.g., use default marker)
-                        val marker = mMap?.addMarker(MarkerOptions().position(point))
-                        marker?.tag = point
-                        mMap?.setOnMarkerClickListener { clickedMarker ->
-                            val clickedPoint = clickedMarker.tag as LatLng
-                            showCard(clickedPoint)
-                            true // Consume the click
-                        }
-                    }
-
-                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                        // Optional: show a placeholder while loading
-                    }
-                })
+            mMap?.addMarker(
+                MarkerOptions()
+                    .position(point)
+                    .title("Custom Marker")
+                    .icon(getBitmapDescriptor(R.drawable.ic_map))
+            )
         }
 
-
-
+        // Move the camera to the first point
         if (israelPoints.isNotEmpty()) {
             mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(israelPoints[0], 7f))
         }
+
+        // Handle marker clicks
+        mMap?.setOnMarkerClickListener { marker ->
+            showInfoCard(marker)
+            true
+        }
     }
 
-    private fun showCard(coordinates: LatLng) {
-        cardView.visibility = View.VISIBLE
-        // Set the text in the card view with the coordinates
-        // Example:
-         val coordinatesTextView = cardView.findViewById<TextView>(R.id.coordinatesTextView)
-         coordinatesTextView.text = "Latitude: ${coordinates.latitude}, Longitude: ${coordinates.longitude}"
+    private fun showInfoCard(marker: Marker) {
+        infoCard?.visibility = View.VISIBLE
+        infoText?.text = "Coordinates: ${marker.position.latitude}, ${marker.position.longitude}"
+    }
 
-        // You can customize the card's content as per your requirements
+    private fun getBitmapDescriptor(resourceId: Int): BitmapDescriptor {
+        val drawable = resources.getDrawable(resourceId, null)
+        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }
 
