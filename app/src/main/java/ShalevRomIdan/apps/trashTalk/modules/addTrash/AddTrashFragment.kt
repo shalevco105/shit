@@ -96,11 +96,11 @@ class AddTrashFragment : Fragment() {
 
             if (trashImageUri != null) {
                 uploadImageToServer { uri ->
-                    val trash = Trash(id,address, name, recipe, false, author, uri)
+                    val trash = Trash(id, name, address, recipe, false, author, uri)
                     saveTrash(trash, it)
                 }
             } else {
-                val trash = Trash(id, address, name, recipe, false, author, placeholderImageSrc)
+                val trash = Trash(id, name, address, recipe, false, author, placeholderImageSrc)
                 saveTrash(trash, it)
             }
         }

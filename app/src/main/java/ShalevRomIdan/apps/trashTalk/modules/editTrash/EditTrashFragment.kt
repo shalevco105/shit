@@ -112,7 +112,7 @@ class EditTrashFragment : Fragment() {
 
             if (trashImageUri.toString() == trash?.imageUrl) {
                trash?.let { it1 ->
-                    val newTrash = Trash(it1.id, address, name, recipe, false,
+                    val newTrash = Trash(it1.id, name, address, recipe, false,
                         it1.author, it1.imageUrl)
                    editTrash(newTrash, it)
                }
@@ -120,7 +120,7 @@ class EditTrashFragment : Fragment() {
                 uploadImageToServer { uri ->
                     trash?.let { it1 ->
                         val newTrash = Trash(
-                            it1.id, address, name, recipe, false,
+                            it1.id, name, address, recipe, false,
                             it1.author, uri
                         )
                         editTrash(newTrash, it)
