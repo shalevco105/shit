@@ -1,12 +1,19 @@
 package trashTalk.apps.trashTalk.modules.map
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -21,9 +28,10 @@ import trashTalk.apps.trashTalk.R
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
-    private var mMap: GoogleMap? = null
+    private lateinit var mMap: GoogleMap
     private var infoCard: View? = null
     private var infoText: TextView? = null
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,10 +54,58 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         infoCard?.visibility = View.GONE
     }
 
+    private fun enableMyLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            mMap.isMyLocationEnabled = true
+        }
+    }
+
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            enableMyLocation()
+        } else {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    private fun moveToCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val locationProvider = LocationManager.GPS_PROVIDER
+
+            val lastKnownLocation = locationManager.getLastKnownLocation(locationProvider)
+            lastKnownLocation?.let {
+                val currentLatLng = LatLng(it.latitude, it.longitude)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+            }
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.isBuildingsEnabled = true
+        mMap.isIndoorEnabled = true
 
-        // List of points in Israel
+        checkLocationPermission()
+        moveToCurrentLocation()
+
+        //TODO: replace it with fetching trashes and display them
+
         val israelPoints = listOf(
             LatLng(31.7683, 35.2137),  // Jerusalem
             LatLng(32.0853, 34.7818),  // Tel Aviv
@@ -58,7 +114,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             LatLng(31.2529, 34.7915)   // Be'er Sheva
         )
 
-        // Add markers with custom icons
         for (point in israelPoints) {
             mMap?.addMarker(
                 MarkerOptions()
@@ -80,6 +135,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                enableMyLocation()
+            } else {
+                Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun showInfoCard(marker: Marker) {
         infoCard?.visibility = View.VISIBLE
         infoText?.text = "Coordinates: ${marker.position.latitude}, ${marker.position.longitude}"
@@ -94,63 +163,3 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }
-
-
-//check
-//this is original
-//package trashTalk.apps.trashTalk.modules.map
-//
-//import android.os.Bundle
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import androidx.fragment.app.Fragment
-//import com.google.android.gms.maps.CameraUpdateFactory
-//import com.google.android.gms.maps.GoogleMap
-//import com.google.android.gms.maps.OnMapReadyCallback
-//import com.google.android.gms.maps.SupportMapFragment
-//import com.google.android.gms.maps.model.LatLng
-//import com.google.android.gms.maps.model.MarkerOptions
-//import trashTalk.apps.trashTalk.R
-//
-//class MapFragment : Fragment(), OnMapReadyCallback {
-//
-//    private var mMap: GoogleMap? = null
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        return inflater.inflate(R.layout.fragment_map, container, false)
-//    }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        val mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as? SupportMapFragment
-//        mapFragment?.getMapAsync(this)
-//    }
-//
-//    override fun onMapReady(googleMap: GoogleMap) {
-//        mMap = googleMap
-//
-//        // List of points in Israel
-//        val israelPoints = listOf(
-//            LatLng(31.7683, 35.2137),  // Jerusalem
-//            LatLng(32.0853, 34.7818),  // Tel Aviv
-//            LatLng(29.5577, 34.9519),  // Eilat
-//            LatLng(32.7940, 34.9896),  // Haifa
-//            LatLng(31.2529, 34.7915)   // Be'er Sheva
-//        )
-//
-//        // Add markers for each point
-//        for (point in israelPoints) {
-//            mMap?.addMarker(MarkerOptions().position(point).title("Marker in Israel"))
-//        }
-//
-//        // Move the camera to the first point in the list
-//        if (israelPoints.isNotEmpty()) {
-//            mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(israelPoints[0], 7f))
-//        }
-//    }
-//}

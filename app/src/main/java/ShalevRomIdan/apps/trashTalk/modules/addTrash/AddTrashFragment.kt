@@ -35,6 +35,7 @@ import java.util.UUID
 class AddTrashFragment : Fragment() {
 
     private var trashNameTextField: EditText? = null
+    private var trashAddressTextField: EditText? = null
     private var recipeTextField: EditText? = null
     private var trashImageView: ImageView? = null
     private var trashImageUri: Uri? = null
@@ -68,6 +69,7 @@ class AddTrashFragment : Fragment() {
 
     private fun setupUI(view: View) {
         trashNameTextField = binding.editTrashName
+        trashAddressTextField = binding.editTrashAddress
         recipeTextField = binding.editRecipe
         trashImageView = binding.previewTrashImageView
         uploadImageButton = binding.uploadImageButton
@@ -86,6 +88,7 @@ class AddTrashFragment : Fragment() {
 
         cancelButton?.setOnClickListener { Navigation.findNavController(it).popBackStack(R.id.trashesFragment, false) }
         saveButton?.setOnClickListener {
+            val address = trashAddressTextField?.text.toString()
             val name = trashNameTextField?.text.toString()
             val recipe = recipeTextField?.text.toString()
             val author = MyApplication.Globals.user?.email ?: ""
@@ -93,11 +96,11 @@ class AddTrashFragment : Fragment() {
 
             if (trashImageUri != null) {
                 uploadImageToServer { uri ->
-                    val trash = Trash(id, name, recipe, false, author, uri)
+                    val trash = Trash(id,address, name, recipe, false, author, uri)
                     saveTrash(trash, it)
                 }
             } else {
-                val trash = Trash(id, name, recipe, false, author, placeholderImageSrc)
+                val trash = Trash(id, address, name, recipe, false, author, placeholderImageSrc)
                 saveTrash(trash, it)
             }
         }

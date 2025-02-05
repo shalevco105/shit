@@ -34,6 +34,7 @@ import trashTalk.apps.trashTalk.modules.TrashViewModel
 class EditTrashFragment : Fragment() {
 
     private var trashNameTextField: EditText? = null
+    private var trashAddressTextField: EditText? = null
     private var recipeTextField: EditText? = null
     private var trashImageView: ImageView? = null
     private var trashImageUri: Uri? = null
@@ -78,6 +79,7 @@ class EditTrashFragment : Fragment() {
 
     private fun setupUI(view: View) {
         trashNameTextField = binding.editTrashName
+        trashAddressTextField = binding.editTrashName
         recipeTextField = binding.editRecipe
         trashImageView = binding.previewTrashImageView
         uploadImageButton = binding.uploadImageButton
@@ -85,6 +87,7 @@ class EditTrashFragment : Fragment() {
         cancelButton = binding.cancelRecipeButton
 
         trashNameTextField?.setText(trash?.name)
+        trashAddressTextField?.setText(trash?.address)
         recipeTextField?.setText(trash?.recipe)
 
         Picasso.get()
@@ -104,11 +107,12 @@ class EditTrashFragment : Fragment() {
         cancelButton?.setOnClickListener { Navigation.findNavController(it).popBackStack(R.id.userTrashesFragment, false) }
         saveButton?.setOnClickListener {
             val name = trashNameTextField?.text.toString()
+            val address = trashAddressTextField?.text.toString()
             val recipe = recipeTextField?.text.toString()
 
             if (trashImageUri.toString() == trash?.imageUrl) {
                trash?.let { it1 ->
-                    val newTrash = Trash(it1.id, name, recipe, false,
+                    val newTrash = Trash(it1.id, address, name, recipe, false,
                         it1.author, it1.imageUrl)
                    editTrash(newTrash, it)
                }
@@ -116,7 +120,7 @@ class EditTrashFragment : Fragment() {
                 uploadImageToServer { uri ->
                     trash?.let { it1 ->
                         val newTrash = Trash(
-                            it1.id, name, recipe, false,
+                            it1.id, address, name, recipe, false,
                             it1.author, uri
                         )
                         editTrash(newTrash, it)
