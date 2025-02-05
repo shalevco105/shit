@@ -42,7 +42,8 @@
         android:textColor="@color/black"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editTrashName" />
+
     <EditText
         android:id="@+id/editTrashAddress"
         android:layout_width="0dp"
@@ -53,7 +54,7 @@
         android:hint="Enter Trash Address"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/trashAddressTextView"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTrashName"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
@@ -66,7 +67,7 @@
         android:textColor="@color/black"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTrashName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTrashAddress" />
 
     <EditText
         android:id="@+id/editRecipe"
@@ -78,7 +79,7 @@
         android:hint="Enter Recipe"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/recipeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/editTrashName"
+        app:layout_constraintTop_toBottomOf="@+id/editTrashAddress"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
