@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -31,7 +33,7 @@ import trashTalk.apps.trashTalk.R
 import trashTalk.apps.trashTalk.modules.TrashViewModel
 import java.util.Locale
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
     private lateinit var mMap: GoogleMap
     private var infoCard: View? = null
@@ -104,9 +106,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     fun getLatLngFromAddress(address: String, callback: (LatLng?) -> Unit) {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         val addresses = geocoder.getFromLocationName(address, 1)
+        Log.i("s", "geocoder Trash: ${geocoder}")
+        Log.i("s", "addresses Trash: ${addresses}")
+
         if (addresses != null && addresses.isNotEmpty()) {
             val location = addresses[0]
             val latLng = LatLng(location.latitude, location.longitude)
+            Log.i("s", "lating Trash: ${latLng}")
+
             callback(latLng)
         } else {
             callback(null)
@@ -126,7 +133,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         viewModel.trashes?.observe(viewLifecycleOwner) { trashesList ->
+            Log.i("s", "Trashes list size: ${trashesList.size}")
             for (trash in trashesList) {
+            Log.i("s", "Trash address: ${trash.address}")
                 getLatLngFromAddress(trash.address) { latLng ->
                     if (latLng != null) {
                         val marker = mMap.addMarker(
@@ -192,5 +201,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    override fun onLocationChanged(p0: Location) {
+        TODO("Not yet implemented")
     }
 }
