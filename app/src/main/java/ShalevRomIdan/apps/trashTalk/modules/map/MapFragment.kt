@@ -1,6 +1,7 @@
 package trashTalk.apps.trashTalk.modules.map
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -16,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -30,21 +32,43 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import trashTalk.apps.trashTalk.R
+import trashTalk.apps.trashTalk.databinding.FragmentMapBinding
+import trashTalk.apps.trashTalk.models.Trash
 import trashTalk.apps.trashTalk.modules.TrashViewModel
 import java.util.Locale
 
 class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
+    private var _binding: FragmentMapBinding? = null
+    private val binding get() = _binding!!
     private lateinit var mMap: GoogleMap
     private var infoCard: View? = null
     private var infoText: TextView? = null
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
 
+    @SuppressLint("ServiceCast")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
+
+        val mapFragment = childFragmentManager
+            .findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+//        binding.plusButton.setOnClickListener {
+//            mMap.animateCamera(CameraUpdateFactory.zoomIn())
+//        }
+//
+//        binding.minusButton.setOnClickListener {
+//            mMap.animateCamera(CameraUpdateFactory.zoomOut())
+//        }
+
+        return binding.root
+
+// --- working code
+//        return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -174,6 +198,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
             true
         }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
