@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -34,7 +35,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import trashTalk.apps.trashTalk.R
 import trashTalk.apps.trashTalk.databinding.FragmentMapBinding
 import trashTalk.apps.trashTalk.models.Model
+import trashTalk.apps.trashTalk.models.Trash
 import trashTalk.apps.trashTalk.modules.TrashViewModel
+import trashTalk.apps.trashTalk.modules.trashes.TrashesFragmentDirections
 import java.util.Locale
 
 class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
@@ -127,17 +130,28 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
         }
     }
 
+    private fun showTrashDialog(trash: Trash) {
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle(trash.name)
+            .setMessage("Address: ${trash.address}")
+            .setPositiveButton("Go to") { dialog, which ->
+                val action = MapFragmentDirections.actionMapFragmentToTrashDetailsFragment(
+                    trash.name, trash.recipe, trash.imageUrl, trash.author)
+                findNavController().navigate(action)
+            }
+            .setNegativeButton("Close", null)
+            .create()
+
+        dialog.show()
+    }
+
     fun getLatLngFromAddress(address: String, callback: (LatLng?) -> Unit) {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         val addresses = geocoder.getFromLocationName(address, 1)
-        Log.i("s", "geocoder Trash: ${geocoder}")
-        Log.i("s", "addresses Trash: ${addresses}")
 
         if (addresses != null && addresses.isNotEmpty()) {
             val location = addresses[0]
             val latLng = LatLng(location.latitude, location.longitude)
-            Log.i("s", "lating Trash: ${latLng}")
-
             callback(latLng)
         } else {
             callback(null)
@@ -159,9 +173,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
         viewModel.trashes = Model.instance.getAllTrashes()
 
         viewModel.trashes?.observe(viewLifecycleOwner) { trashesList ->
-            Log.i("s", "Trashes list size: ${trashesList.size}")
             for (trash in trashesList) {
-            Log.i("s", "Trash address: ${trash.address}")
                 getLatLngFromAddress(trash.address) { latLng ->
                     if (latLng != null) {
                         val marker = mMap.addMarker(
@@ -176,27 +188,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
             }
         }
 
-
-//        val israelPoints = listOf(
-//            LatLng(31.7683, 35.2137),  // Jerusalem
-//            LatLng(32.0853, 34.7818),  // Tel Aviv
-//            LatLng(29.5577, 34.9519),  // Eilat
-//            LatLng(32.7940, 34.9896),  // Haifa
-//            LatLng(31.2529, 34.7915)   // Be'er Sheva
-//        )
-//
-//        for (point in israelPoints) {
-//            mMap?.addMarker(
-//                MarkerOptions()
-//                    .position(point)
-//                    .title("Custom Marker")
-//                    .icon(getBitmapDescriptor(R.drawable.ic_map))
-//            )
-//        }
-
-        // Handle marker clicks
-        mMap?.setOnMarkerClickListener { marker ->
-            showInfoCard(marker)
+        mMap.setOnMarkerClickListener { marker ->
+            val trash = marker.tag as? Trash
+            trash?.let {
+                showTrashDialog(trash)
+            }
             true
         }
     }
@@ -214,11 +210,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
                 Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun showInfoCard(marker: Marker) {
-        infoCard?.visibility = View.VISIBLE
-        infoText?.text = "Coordinates: ${marker.position.latitude}, ${marker.position.longitude}"
     }
 
     private fun getBitmapDescriptor(resourceId: Int): BitmapDescriptor {

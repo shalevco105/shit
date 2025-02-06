@@ -117,8 +117,8 @@
         android:label="Map"
         tools:layout="@layout/fragment_map">
         <action
-            android:id="@+id/action_mapFragment_to_trashesFragment"
-            app:destination="@id/trashesFragment" />
+            android:id="@+id/action_mapFragment_to_trashDetailsFragment"
+            app:destination="@id/showcaseTrashFragment" />
     </fragment>
 
     <!-- Global actions -->
