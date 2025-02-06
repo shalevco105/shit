@@ -33,7 +33,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import trashTalk.apps.trashTalk.R
 import trashTalk.apps.trashTalk.databinding.FragmentMapBinding
-import trashTalk.apps.trashTalk.models.Trash
+import trashTalk.apps.trashTalk.models.Model
 import trashTalk.apps.trashTalk.modules.TrashViewModel
 import java.util.Locale
 
@@ -155,6 +155,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
         val viewModel: TrashViewModel by lazy {
             ViewModelProvider(this)[TrashViewModel::class.java]
         }
+
+        viewModel.trashes = Model.instance.getAllTrashes()
 
         viewModel.trashes?.observe(viewLifecycleOwner) { trashesList ->
             Log.i("s", "Trashes list size: ${trashesList.size}")
