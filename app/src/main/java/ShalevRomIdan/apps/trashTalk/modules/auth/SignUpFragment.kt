@@ -28,7 +28,8 @@ import trashTalk.apps.trashTalk.base.MyApplication
 import trashTalk.apps.trashTalk.databinding.FragmentSignUpBinding
 import trashTalk.apps.trashTalk.models.Model
 import java.io.File
-
+import com.cloudinary.Cloudinary
+import com.cloudinary.utils.ObjectUtils
 class SignUpFragment : Fragment() {
     private val placeholderImageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png"
 
@@ -87,8 +88,10 @@ class SignUpFragment : Fragment() {
         val nickname = nicknameTextView?.text.toString()
         if(!(email.isNullOrBlank() ||
                     password.isNullOrBlank() ||
-                    nickname.isNullOrBlank())) {
-                Model.instance.signupUser(email, password, nickname, "g") { task ->
+                    nickname.isNullOrBlank() ||
+                    profileImageUri == null)) {
+            uploadImageToCloudinary { uri ->
+                Model.instance.signupUser(email, password, nickname, uri) { task ->
                     if (task.isSuccessful) {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_signUpFragment_to_loginFragment)
@@ -101,7 +104,7 @@ class SignUpFragment : Fragment() {
                     }
                     progressBar?.visibility = View.GONE
                 }
-
+            }
             } else {
             Toast.makeText(
                 view.context,
@@ -154,26 +157,52 @@ class SignUpFragment : Fragment() {
         return uri.path?.lastIndexOf('/')?.let { uri.path?.substring(it) }
     }
 
-    private fun uploadImageToServer(callback: (String) -> Unit) {
-        // extract the file name with extension
-        val sd = getFileName(MyApplication.Globals.appContext, profileImageUri!!)
+    private fun uploadImageToCloudinary(callback: (String) -> Unit) {
+        val cloudinary = Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dy5xyzlhm",
+            "api_key", "576721329452639",
+            "api_secret", "xiPVujuY3tz3RxBqcZ8futbNVp8"
+        ))
 
-        // Upload Task with upload to directory 'file'
-        // and name of the file remains same
-        val uploadTask = storageRef.child("file/$sd").putFile(profileImageUri!!)
+        val filePath = getFilePathFromUri(profileImageUri!!) // Convert URI to File path
 
-        // On success, download the file URL and display it
-        uploadTask.addOnSuccessListener {
-            // using glide library to display the image
-            storageRef.child("file/$sd").downloadUrl.addOnSuccessListener {
-                Log.e("Firebase", "download passed - ${it.path}")
-                callback(it.toString())
-            }.addOnFailureListener {
-                Log.e("Firebase", "Failed in downloading")
+        Thread {
+            try {
+                val result = cloudinary.uploader().upload(File(filePath), ObjectUtils.emptyMap())
+                val imageUrl = result["secure_url"] as String
+                Log.e("Cloudinary", "Upload success - $imageUrl")
+                callback(imageUrl)
+            } catch (e: Exception) {
+                Log.e("Cloudinary", "Image Upload failed: ${e.message}")
             }
-        }.addOnFailureListener {
-            Log.e("Firebase", "Image Upload fail")
-        }
+        }.start()
     }
+
+    private fun getFilePathFromUri(uri: Uri): String {
+        val file = File(uri.path!!) // Ensure proper conversion based on your app's logic
+        return file.absolutePath
+    }
+
+//    private fun uploadImageToServer(callback: (String) -> Unit) {
+//        // extract the file name with extension
+//        val sd = getFileName(MyApplication.Globals.appContext, profileImageUri!!)
+//
+//        // Upload Task with upload to directory 'file'
+//        // and name of the file remains same
+//        val uploadTask = storageRef.child("file/$sd").putFile(profileImageUri!!)
+//
+//        // On success, download the file URL and display it
+//        uploadTask.addOnSuccessListener {
+//            // using glide library to display the image
+//            storageRef.child("file/$sd").downloadUrl.addOnSuccessListener {
+//                Log.e("Firebase", "download passed - ${it.path}")
+//                callback(it.toString())
+//            }.addOnFailureListener {
+//                Log.e("Firebase", "Failed in downloading")
+//            }
+//        }.addOnFailureListener {
+//            Log.e("Firebase", "Image Upload fail")
+//        }
+//    }
 
 }
