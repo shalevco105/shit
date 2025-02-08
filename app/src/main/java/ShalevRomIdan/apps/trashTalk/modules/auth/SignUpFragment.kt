@@ -24,12 +24,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import trashTalk.apps.trashTalk.R
-import trashTalk.apps.trashTalk.base.MyApplication
 import trashTalk.apps.trashTalk.databinding.FragmentSignUpBinding
 import trashTalk.apps.trashTalk.models.Model
 import java.io.File
 import com.cloudinary.Cloudinary
 import com.cloudinary.utils.ObjectUtils
+import java.io.FileOutputStream
+
 class SignUpFragment : Fragment() {
     private val placeholderImageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png"
 
@@ -179,7 +180,17 @@ class SignUpFragment : Fragment() {
     }
 
     private fun getFilePathFromUri(uri: Uri): String {
-        val file = File(uri.path!!) // Ensure proper conversion based on your app's logic
+        val context = requireContext()
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val file = File(context.cacheDir, "temp_image_file")
+        val outputStream = FileOutputStream(file)
+
+        inputStream?.use { input ->
+            outputStream.use { output ->
+                input.copyTo(output)
+            }
+        }
+
         return file.absolutePath
     }
 
