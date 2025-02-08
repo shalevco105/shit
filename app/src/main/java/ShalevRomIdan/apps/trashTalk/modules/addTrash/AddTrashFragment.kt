@@ -40,7 +40,6 @@ class AddTrashFragment : Fragment() {
 
     private var trashNameTextField: EditText? = null
     private var trashAddressTextField: EditText? = null
-    private var recipeTextField: EditText? = null
     private var trashImageView: ImageView? = null
     private var trashImageUri: Uri? = null
     private var saveButton: Button? = null
@@ -74,11 +73,8 @@ class AddTrashFragment : Fragment() {
     private fun setupUI(view: View) {
         trashNameTextField = binding.editTrashName
         trashAddressTextField = binding.editTrashAddress
-        recipeTextField = binding.editRecipe
         trashImageView = binding.previewTrashImageView
         uploadImageButton = binding.uploadImageButton
-        saveButton = binding.saveRecipeButton
-        cancelButton = binding.cancelRecipeButton
 
         uploadImageButton?.setOnClickListener {
             // PICK INTENT picks item from data
@@ -94,17 +90,16 @@ class AddTrashFragment : Fragment() {
         saveButton?.setOnClickListener {
             val address = trashAddressTextField?.text.toString()
             val name = trashNameTextField?.text.toString()
-            val recipe = recipeTextField?.text.toString()
             val author = MyApplication.Globals.user?.email ?: ""
             val id = UUID.randomUUID().toString()
 
             if (trashImageUri != null) {
                 uploadImageToCloudinary { uri ->
-                    val trash = Trash(id, name, address, recipe, false, author, uri)
+                    val trash = Trash(id, name, address, false, author, uri)
                     saveTrash(trash, it)
                 }
             } else {
-                val trash = Trash(id, name, address, recipe, false, author, placeholderImageSrc)
+                val trash = Trash(id, name, address, false, author, placeholderImageSrc)
                 saveTrash(trash, it)
             }
         }

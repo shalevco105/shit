@@ -136,7 +136,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
             .setMessage("Address: ${trash.address}")
             .setPositiveButton("Go to") { dialog, which ->
                 val action = MapFragmentDirections.actionMapFragmentToTrashDetailsFragment(
-                    trash.name, trash.recipe, trash.imageUrl, trash.author)
+                    trash.name, trash.imageUrl, trash.author)
                 findNavController().navigate(action)
             }
             .setNegativeButton("Close", null)

@@ -64,9 +64,6 @@
             android:name="TRASH_NAME"
             app:argType="string" />
         <argument
-            android:name="TRASH_RECIPE"
-            app:argType="string" />
-        <argument
             android:name="TRASH_IMAGE_URL"
             app:argType="string" />
         <argument

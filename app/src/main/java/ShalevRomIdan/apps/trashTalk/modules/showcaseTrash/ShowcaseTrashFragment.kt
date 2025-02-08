@@ -13,7 +13,6 @@ import trashTalk.apps.trashTalk.models.Model
 
 class ShowcaseTrashFragment : Fragment() {
     private var trashNameTextView: TextView? = null
-    private var trashRecipeTextView: TextView? = null
     private var trashAuthorTextView: TextView? = null
     private var trashImageView: ImageView? = null
 
@@ -32,10 +31,6 @@ class ShowcaseTrashFragment : Fragment() {
             ShowcaseTrashFragmentArgs.fromBundle(it).TRASHNAME
         }
 
-        val trashRecipe = arguments?.let {
-            ShowcaseTrashFragmentArgs.fromBundle(it).TRASHRECIPE
-        }
-
         val trashUrl = arguments?.let {
             ShowcaseTrashFragmentArgs.fromBundle(it).TRASHIMAGEURL
         }
@@ -44,13 +39,10 @@ class ShowcaseTrashFragment : Fragment() {
             ShowcaseTrashFragmentArgs.fromBundle(it).TRASHAUTHOR
         }
 
-        trashNameTextView = binding.showcaseRecipeName
-        trashRecipeTextView = binding.showcaseTrashRecipe
         trashAuthorTextView = binding.authorNickName
         trashImageView = binding.showcaseTrashImage
 
         trashNameTextView?.text = trashName ?: "BOOP"
-        trashRecipeTextView?.text = trashRecipe ?: "BOOP"
         Model.instance.getAuthorByEmail(author?:"") {
             trashAuthorTextView?.text = it.nickname
         }

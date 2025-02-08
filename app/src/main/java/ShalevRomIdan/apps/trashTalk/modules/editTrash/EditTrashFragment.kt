@@ -39,7 +39,6 @@ class EditTrashFragment : Fragment() {
 
     private var trashNameTextField: EditText? = null
     private var trashAddressTextField: EditText? = null
-    private var recipeTextField: EditText? = null
     private var trashImageView: ImageView? = null
     private var trashImageUri: Uri? = null
     private var saveButton: Button? = null
@@ -84,15 +83,11 @@ class EditTrashFragment : Fragment() {
     private fun setupUI(view: View) {
         trashNameTextField = binding.editTrashName
         trashAddressTextField = binding.editTrashName
-        recipeTextField = binding.editRecipe
         trashImageView = binding.previewTrashImageView
         uploadImageButton = binding.uploadImageButton
-        saveButton = binding.saveRecipeButton
-        cancelButton = binding.cancelRecipeButton
 
         trashNameTextField?.setText(trash?.name)
         trashAddressTextField?.setText(trash?.address)
-        recipeTextField?.setText(trash?.recipe)
 
         Picasso.get()
             .load(trashImageUri)
@@ -112,11 +107,10 @@ class EditTrashFragment : Fragment() {
         saveButton?.setOnClickListener {
             val name = trashNameTextField?.text.toString()
             val address = trashAddressTextField?.text.toString()
-            val recipe = recipeTextField?.text.toString()
 
             if (trashImageUri.toString() == trash?.imageUrl) {
                trash?.let { it1 ->
-                    val newTrash = Trash(it1.id, name, address, recipe, false,
+                    val newTrash = Trash(it1.id, name, address, false,
                         it1.author, it1.imageUrl)
                    editTrash(newTrash, it)
                }
@@ -124,7 +118,7 @@ class EditTrashFragment : Fragment() {
                 uploadImageToCloudinary { uri ->
                     trash?.let { it1 ->
                         val newTrash = Trash(
-                            it1.id, name, address, recipe, false,
+                            it1.id, name, address, false,
                             it1.author, uri
                         )
                         editTrash(newTrash, it)

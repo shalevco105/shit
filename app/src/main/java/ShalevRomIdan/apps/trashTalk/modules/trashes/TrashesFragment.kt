@@ -49,7 +49,7 @@ class TrashesFragment : Fragment() {
             override fun onTrashClick(trash: Trash?) {
                 Log.i("TAG", "trash: ${trash}")
                 trash?.let {
-                    val action = TrashesFragmentDirections.actionTrashesFragmentToShowcaseTrashFragment(it.name, it.recipe, it.imageUrl, it.author)
+                    val action = TrashesFragmentDirections.actionTrashesFragmentToShowcaseTrashFragment(it.name, it.imageUrl, it.author)
                     Navigation.findNavController(view).navigate(action)
                 }
             }

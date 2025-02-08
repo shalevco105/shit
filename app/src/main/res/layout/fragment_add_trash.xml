@@ -58,31 +58,6 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/recipeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recipe"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTrashAddress" />
-
-    <EditText
-        android:id="@+id/editRecipe"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:inputType="text|textMultiLine"
-        android:hint="Enter Recipe"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/recipeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/editTrashAddress"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
         android:id="@+id/uploadImageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,7 +67,7 @@
         android:textColor="@color/black"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editRecipe" />
+        app:layout_constraintTop_toBottomOf="@+id/editTrashAddress" />
 
     <ImageButton
         android:id="@+id/uploadImageButton"
@@ -102,7 +77,7 @@
         android:src="@android:drawable/ic_menu_camera"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         app:layout_constraintStart_toEndOf="@+id/uploadImageTextView"
-        app:layout_constraintTop_toBottomOf="@+id/editRecipe"
+        app:layout_constraintTop_toBottomOf="@+id/editTrashAddress"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
@@ -114,31 +89,5 @@
         app:layout_constraintTop_toBottomOf="@+id/uploadImageButton"
         app:layout_constraintEnd_toEndOf="parent"
         tools:src="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/saveRecipeButton"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:text="Save"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/primary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cancelRecipeButton"
-        app:layout_constraintTop_toBottomOf="@+id/previewTrashImageView" />
-
-    <Button
-        android:id="@+id/cancelRecipeButton"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:text="Cancel"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/primaryDark"
-        app:layout_constraintStart_toEndOf="@+id/saveRecipeButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/previewTrashImageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
