@@ -75,6 +75,8 @@ class AddTrashFragment : Fragment() {
         trashAddressTextField = binding.editTrashAddress
         trashImageView = binding.previewTrashImageView
         uploadImageButton = binding.uploadImageButton
+        cancelButton = binding.cancelButton
+        saveButton = binding.saveButton
 
         uploadImageButton?.setOnClickListener {
             // PICK INTENT picks item from data

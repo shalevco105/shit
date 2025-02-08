@@ -90,4 +90,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:src="@tools:sample/avatars" />
 
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="118dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="32dp"
+        android:text="save"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cancelButton"/>
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="118dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="cancel"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/saveButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

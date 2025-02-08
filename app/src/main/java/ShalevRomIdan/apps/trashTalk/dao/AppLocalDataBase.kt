@@ -8,7 +8,7 @@ import trashTalk.apps.trashTalk.models.Trash
 import trashTalk.apps.trashTalk.models.User
 
 
-@Database(entities = [Trash::class, User::class], version = 8)
+@Database(entities = [Trash::class, User::class], version = 9)
 abstract class AppLocalDbRepository : RoomDatabase() {
     abstract fun trashDao():TrashDao
     abstract fun userDao():UserDao

@@ -82,9 +82,11 @@ class EditTrashFragment : Fragment() {
 
     private fun setupUI(view: View) {
         trashNameTextField = binding.editTrashName
-        trashAddressTextField = binding.editTrashName
+        trashAddressTextField = binding.editAddress
         trashImageView = binding.previewTrashImageView
         uploadImageButton = binding.uploadImageButton
+        cancelButton = binding.cancelButton
+        saveButton = binding.saveButton
 
         trashNameTextField?.setText(trash?.name)
         trashAddressTextField?.setText(trash?.address)
