@@ -17,12 +17,16 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.cloudinary.Cloudinary
+import com.cloudinary.utils.ObjectUtils
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import trashTalk.apps.trashTalk.base.MyApplication
 import trashTalk.apps.trashTalk.databinding.FragmentProfileBinding
 import trashTalk.apps.trashTalk.models.Model
+import java.io.File
+import java.io.FileOutputStream
 
 class ProfileFragment : Fragment() {
     private val placeholderImageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png"
@@ -96,42 +100,44 @@ class ProfileFragment : Fragment() {
             }
         }
 
-    @SuppressLint("Range")
-    private fun getFileName(context: Context?, uri: Uri): String? {
-        if (uri.scheme == "content") {
-            val cursor = context?.contentResolver?.query(uri, null, null, null, null)
-            cursor.use {
-                if (cursor != null) {
-                    if(cursor.moveToFirst()) {
-                        return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                    }
-                }
+    private fun uploadImageToCloudinary(callback: (String) -> Unit) {
+        val cloudinary = Cloudinary(
+            ObjectUtils.asMap(
+            "cloud_name", "dy5xyzlhm",
+            "api_key", "576721329452639",
+            "api_secret", "xiPVujuY3tz3RxBqcZ8futbNVp8"
+        ))
+
+        val filePath = getFilePathFromUri(profileImageUri!!) // Convert URI to File path
+
+        Thread {
+            try {
+                val result = cloudinary.uploader().upload(File(filePath), ObjectUtils.emptyMap())
+                val imageUrl = result["secure_url"] as String
+                Log.e("Cloudinary", "Upload success - $imageUrl")
+                callback(imageUrl)
+            } catch (e: Exception) {
+                Log.e("Cloudinary", "Image Upload failed: ${e.message}")
             }
-        }
-        return uri.path?.lastIndexOf('/')?.let { uri.path?.substring(it) }
+        }.start()
     }
 
-    private fun uploadImageToServer(callback: (String) -> Unit) {
-        // extract the file name with extension
-        val sd = getFileName(MyApplication.Globals.appContext, profileImageUri!!)
+    private fun getFilePathFromUri(uri: Uri): String {
+        val context = requireContext()
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val file = File(context.cacheDir, "temp_image_file")
+        val outputStream = FileOutputStream(file)
 
-        // Upload Task with upload to directory 'file'
-        // and name of the file remains same
-        val uploadTask = storageRef.child("file/$sd").putFile(profileImageUri!!)
-
-        // On success, download the file URL and display it
-        uploadTask.addOnSuccessListener {
-            // using glide library to display the image
-            storageRef.child("file/$sd").downloadUrl.addOnSuccessListener {
-                Log.e("Firebase", "download passed - ${it.path}")
-                callback(it.toString())
-            }.addOnFailureListener {
-                Log.e("Firebase", "Failed in downloading")
+        inputStream?.use { input ->
+            outputStream.use { output ->
+                input.copyTo(output)
             }
-        }.addOnFailureListener {
-            Log.e("Firebase", "Image Upload fail")
         }
+
+        return file.absolutePath
     }
+
+
 
     fun onSave(view: View) {
         progressBar?.visibility = View.VISIBLE
@@ -144,7 +150,7 @@ class ProfileFragment : Fragment() {
 
             // check if image is changed
             if (profileImageUri != null) {
-                uploadImageToServer { uri ->
+                uploadImageToCloudinary { uri ->
                     Model.instance.updateUser(id, nicknameEdit?.text.toString(), uri) {
                         Model.instance.getUserByEmail(email)
                         progressBar?.visibility = View.GONE

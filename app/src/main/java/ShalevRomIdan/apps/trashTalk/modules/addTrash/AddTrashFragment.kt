@@ -20,6 +20,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.cloudinary.Cloudinary
+import com.cloudinary.utils.ObjectUtils
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
@@ -29,6 +31,8 @@ import trashTalk.apps.trashTalk.databinding.FragmentAddTrashBinding
 import trashTalk.apps.trashTalk.models.Trash
 import trashTalk.apps.trashTalk.models.Model
 import trashTalk.apps.trashTalk.modules.TrashViewModel
+import java.io.File
+import java.io.FileOutputStream
 import java.util.UUID
 
 
@@ -95,7 +99,7 @@ class AddTrashFragment : Fragment() {
             val id = UUID.randomUUID().toString()
 
             if (trashImageUri != null) {
-                uploadImageToServer { uri ->
+                uploadImageToCloudinary { uri ->
                     val trash = Trash(id, name, address, recipe, false, author, uri)
                     saveTrash(trash, it)
                 }
@@ -134,40 +138,40 @@ class AddTrashFragment : Fragment() {
             }
         }
 
-    @SuppressLint("Range")
-    private fun getFileName(context: Context?, uri: Uri): String? {
-        if (uri.scheme == "content") {
-            val cursor = context?.contentResolver?.query(uri, null, null, null, null)
-            cursor.use {
-                if (cursor != null) {
-                    if(cursor.moveToFirst()) {
-                        return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                    }
-                }
+    private fun uploadImageToCloudinary(callback: (String) -> Unit) {
+        val cloudinary = Cloudinary(
+            ObjectUtils.asMap(
+            "cloud_name", "dy5xyzlhm",
+            "api_key", "576721329452639",
+            "api_secret", "xiPVujuY3tz3RxBqcZ8futbNVp8"
+        ))
+
+        val filePath = getFilePathFromUri(trashImageUri!!) // Convert URI to File path
+
+        Thread {
+            try {
+                val result = cloudinary.uploader().upload(File(filePath), ObjectUtils.emptyMap())
+                val imageUrl = result["secure_url"] as String
+                Log.e("Cloudinary", "Upload success - $imageUrl")
+                callback(imageUrl)
+            } catch (e: Exception) {
+                Log.e("Cloudinary", "Image Upload failed: ${e.message}")
             }
-        }
-        return uri.path?.lastIndexOf('/')?.let { uri.path?.substring(it) }
+        }.start()
     }
 
-    private fun uploadImageToServer(callback: (String) -> Unit) {
-                // extract the file name with extension
-        val sd = getFileName(MyApplication.Globals.appContext, trashImageUri!!)
+    private fun getFilePathFromUri(uri: Uri): String {
+        val context = requireContext()
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val file = File(context.cacheDir, "temp_image_file")
+        val outputStream = FileOutputStream(file)
 
-        // Upload Task with upload to directory 'file'
-        // and name of the file remains same
-        val uploadTask = storageRef.child("file/$sd").putFile(trashImageUri!!)
-
-        // On success, download the file URL and display it
-        uploadTask.addOnSuccessListener {
-            // using glide library to display the image
-            storageRef.child("file/$sd").downloadUrl.addOnSuccessListener {
-                Log.e("Firebase", "download passed - ${it.path}")
-                callback(it.toString())
-            }.addOnFailureListener {
-                Log.e("Firebase", "Failed in downloading")
+        inputStream?.use { input ->
+            outputStream.use { output ->
+                input.copyTo(output)
             }
-        }.addOnFailureListener {
-            Log.e("Firebase", "Image Upload fail")
         }
+
+        return file.absolutePath
     }
 }

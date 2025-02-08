@@ -193,27 +193,4 @@ class SignUpFragment : Fragment() {
 
         return file.absolutePath
     }
-
-//    private fun uploadImageToServer(callback: (String) -> Unit) {
-//        // extract the file name with extension
-//        val sd = getFileName(MyApplication.Globals.appContext, profileImageUri!!)
-//
-//        // Upload Task with upload to directory 'file'
-//        // and name of the file remains same
-//        val uploadTask = storageRef.child("file/$sd").putFile(profileImageUri!!)
-//
-//        // On success, download the file URL and display it
-//        uploadTask.addOnSuccessListener {
-//            // using glide library to display the image
-//            storageRef.child("file/$sd").downloadUrl.addOnSuccessListener {
-//                Log.e("Firebase", "download passed - ${it.path}")
-//                callback(it.toString())
-//            }.addOnFailureListener {
-//                Log.e("Firebase", "Failed in downloading")
-//            }
-//        }.addOnFailureListener {
-//            Log.e("Firebase", "Image Upload fail")
-//        }
-//    }
-
 }
