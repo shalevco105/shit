@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -32,12 +31,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import trashTalk.apps.trashTalk.R
 import trashTalk.apps.trashTalk.databinding.FragmentMapBinding
 import trashTalk.apps.trashTalk.models.Model
 import trashTalk.apps.trashTalk.models.Trash
 import trashTalk.apps.trashTalk.modules.TrashViewModel
 import trashTalk.apps.trashTalk.modules.trashes.TrashesFragmentDirections
+import java.io.IOException
 import java.util.Locale
 
 class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
@@ -60,18 +64,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-//        binding.plusButton.setOnClickListener {
-//            mMap.animateCamera(CameraUpdateFactory.zoomIn())
-//        }
-//
-//        binding.minusButton.setOnClickListener {
-//            mMap.animateCamera(CameraUpdateFactory.zoomOut())
-//        }
-
         return binding.root
-
-// --- working code
-//        return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -145,16 +138,28 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
         dialog.show()
     }
 
-    fun getLatLngFromAddress(address: String, callback: (LatLng?) -> Unit) {
-        val geocoder = Geocoder(requireContext(), Locale.getDefault())
-        val addresses = geocoder.getFromLocationName(address, 1)
-
-        if (addresses != null && addresses.isNotEmpty()) {
-            val location = addresses[0]
-            val latLng = LatLng(location.latitude, location.longitude)
-            callback(latLng)
-        } else {
-            callback(null)
+    private fun getLatLngFromAddress(address: String, callback: (LatLng?) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            try {
+                val addresses = geocoder.getFromLocationName(address, 1)
+                if (addresses != null && addresses.isNotEmpty()) {
+                    val location = addresses[0]
+                    val latLng = LatLng(location.latitude, location.longitude)
+                    withContext(Dispatchers.Main) {
+                        callback(latLng)
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        callback(null)
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    callback(null)
+                }
+            }
         }
     }
 
@@ -196,7 +201,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
             true
         }
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
